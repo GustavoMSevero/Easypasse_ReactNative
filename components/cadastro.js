@@ -1,27 +1,90 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, TextInput, Button} from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import axios from 'axios';
 
 
 type Props = {};
-export default class Cadastro extends Component<Props> {
+export default class Cadastro extends Component {
 
   constructor(props) {
       super(props);
 
+      this.state = {
+          nome: null,
+          cpf: null,
+          senha: null,
+          msg: '',
+      };
+
+      this.salvar  = this.salvar.bind(this);
+
   }
+
+  salvar() {
+    //console.log(this.state.nome+' '+this.state.cpf+' '+this.state.senha)
+  var urlCadastroUsuario = 'http://easypasse.com.br/gestao/wsCadastrar.php';
+
+  fetch(urlCadastroUsuario,{  method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body:JSON.stringify({
+        nome: this.state.nome, cpf: this.state.cpf, senha: this.state.senha,
+        method: 'app-set-usuario', "plataforma": 'ios'})})
+    .then((response) => response.json())
+    .then((responseJson) => {
+        const body = responseJson
+        var msg = body.msg;
+        // console.log(body)
+        // console.log(body.error)
+        // console.log(body.msg)
+        if(body.error == 'Validar Informacao'){
+          //console.log(body.error)
+          this.setState({msg: msg});
+        } else {
+          //console.log('Beleza!')
+          Actions.push('principal');
+        }
+        
+      })
+      .catch((error) => {
+      console.error(error);
+      });
+  }
+  //this.setState({msg: msg});
+  //Actions.push('principal');
+
 
   render(){
     return(
       <View style={styles.container}>
-        <TextInput style={styles.textNome} placeholder="Nome" backgroundColor="#3598DC" />
-        <TextInput style={styles.textCPF} placeholder="CPF" backgroundColor="#3598DC" />
-        <TextInput style={styles.textSenha} placeholder="Senha" backgroundColor="#3598DC" />
+        <TextInput style={styles.textNome}
+          onChangeText={texto => this.state.nome = texto }
+          placeholder="Nome"
+          backgroundColor="#3598DC"
+        />
+
+        <TextInput style={styles.textCPF}
+          onChangeText={texto => this.state.cpf = texto }
+          placeholder="CPF"
+          backgroundColor="#3598DC"
+        />
+
+        <TextInput style={styles.textSenha}
+          secureTextEntry={true}
+          onChangeText={texto => this.state.senha = texto }
+          placeholder="Senha"
+          backgroundColor="#3598DC"
+        />
+
         <View backgroundColor="#000000" style={styles.btnSalvar}>
-          <Button onPress={() => (false)} title="SALVAR" color="#FFFFFF"/>
+          <Button onPress={() => this.salvar()} title="SALVAR" color="#FFFFFF"/>
         </View>
+
         <View>
-          <Text style={styles.avisoErro} ></Text>
+          <Text style={styles.avisoErro}>{this.state.msg}</Text>
         </View>
       </View>
     )
@@ -65,6 +128,7 @@ const styles = StyleSheet.create({
   avisoErro: {
     marginTop: 20,
     textAlign: 'center',
+    color: '#ffffff',
   },
 
 });
