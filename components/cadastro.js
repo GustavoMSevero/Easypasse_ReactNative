@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, TextInput, Button} from 'react-native';
+import {Platform, StyleSheet, Text, View, TextInput, Button, AsyncStorage} from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
 
@@ -23,7 +23,7 @@ export default class Cadastro extends Component {
 
   salvar() {
     //console.log(this.state.nome+' '+this.state.cpf+' '+this.state.senha)
-  var urlCadastroUsuario = 'http://easypasse.com.br/gestao/wsCadastrar.php';
+    var urlCadastroUsuario = 'http://easypasse.com.br/gestao/wsCadastrar.php';
 
   fetch(urlCadastroUsuario,{  method: 'POST',
       headers: {
@@ -37,14 +37,22 @@ export default class Cadastro extends Component {
     .then((responseJson) => {
         const body = responseJson
         var msg = body.msg;
-        // console.log(body)
         // console.log(body.error)
         // console.log(body.msg)
         if(body.error == 'Validar Informacao'){
           //console.log(body.error)
           this.setState({msg: msg});
         } else {
+          //console.log(body.usuario[0])
           //console.log('Beleza!')
+          _storeData = async () => {
+            try {
+              await AsyncStorage.setItem('usuario', body.usuario[0]);
+            } catch (error) {
+              // Error saving data
+              console.log('Erro: '+erro)
+            }
+          }
           Actions.push('principal');
         }
         
@@ -53,8 +61,6 @@ export default class Cadastro extends Component {
       console.error(error);
       });
   }
-  //this.setState({msg: msg});
-  //Actions.push('principal');
 
 
   render(){

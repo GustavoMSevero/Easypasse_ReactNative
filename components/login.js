@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Image, TextInput, Button} from 'react-native';
+import {Platform, StyleSheet, Text, View, Image, TextInput, Button, AsyncStorage} from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
 var img = require('../imgs/logo_easy_passe.png');
@@ -10,12 +10,52 @@ export default class Login extends Component<Props> {
   constructor(props) {
     super(props);
 
-    this.state = { aviso : 'Erro'};
+    this.state = { msg: null , cpf: null, senha: null};
+
+    this.logar  = this.logar.bind(this);
 
   }
 
-  login(){
-    
+  logar(){
+    //console.log(this.state.cpf+' '+this.state.senha)
+    var urlLoginUsuario = 'http://easypasse.com.br/gestao/wsLogin.php';
+    fetch(urlLoginUsuario,{  method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body:JSON.stringify({
+        cpf: this.state.cpf, senha: this.state.senha,
+        method: 'app-get-login', "plataforma": 'ios'})})
+      .then((response) => response.json())
+      .then((responseJson) => {
+          const body = responseJson
+          var msg = body.msg;
+          //console.log(body)
+          //console.log(body.error)
+          //console.log(body.msg)
+          if(body.error == 'Autenticacao'){
+            //console.log(body.error)
+            this.setState({msg: msg});
+          } else {
+            //console.log('Beleza!')
+            //console.log(body.registro.usuario)
+            _storeData = async () => {
+              try {
+                await AsyncStorage.setItem('usuario', body.registro.usuario);
+              } catch (error) {
+                // Error saving data
+                console.log('Erro: '+erro)
+              }
+            }
+
+            Actions.push('principal');
+          }
+          
+        })
+        .catch((error) => {
+        console.error(error);
+        });
   }
 
   render() {
@@ -25,13 +65,24 @@ export default class Login extends Component<Props> {
           <Image source={img} style={styles.logo} />
         </View>
         <View>
-          <TextInput style={styles.textCPF} placeholder="CPF" backgroundColor="#3598DC" textAlign="center"/>
-          <TextInput style={styles.textSenha} placeholder="Senha" backgroundColor="#3598DC" textAlign="center"/>
+          <TextInput style={styles.textCPF} 
+            placeholder="CPF" 
+            onChangeText={texto => this.state.cpf = texto }
+            backgroundColor="#3598DC" 
+            textAlign="center"/>
+
+          <TextInput style={styles.textSenha} 
+            placeholder="Senha" 
+            onChangeText={texto => this.state.senha = texto }
+            backgroundColor="#3598DC" 
+            textAlign="center" 
+            secureTextEntry={true}/>
 
           <View backgroundColor="#000000" style={styles.viewBtnAcesse}>
-            <Button onPress={() => (false)} title="ACESSE" color="#FFFFFF"/>
+            <Button onPress={() => this.logar()} title="ACESSE" color="#FFFFFF"/>
             <View>
-              <Text style={styles.aviso} msgAviso={this.state.aviso}></Text>
+              
+              <Text style={styles.avisoErro}>{this.state.msg}</Text>
             </View>
           </View>
 
@@ -82,8 +133,10 @@ const styles = StyleSheet.create({
     height: 40,
     marginBottom: 50,
   },
-  aviso: {
-
+  avisoErro: {
+    marginTop: 20,
+    textAlign: 'center',
+    color: '#ffffff',
   },
   mensagem: {
     color:"#ffffff",
