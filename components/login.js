@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Image, TextInput, Button, AsyncStorage} from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
-var img = require('../imgs/logo_easy_passe.png');
+var img = require('../imgs/logo-menor.png');
 
 type Props = {};
 export default class Login extends Component<Props> {
@@ -40,14 +40,14 @@ export default class Login extends Component<Props> {
           } else {
             //console.log('Beleza!')
             //console.log(body.registro.usuario)
-            _storeData = async () => {
+            var _storeData = async () => {
               try {
                 await AsyncStorage.setItem('usuario', body.registro.usuario);
               } catch (error) {
                 // Error saving data
                 console.log('Erro: '+erro)
               }
-            }
+            };
 
             Actions.push('principal');
           }
@@ -61,27 +61,24 @@ export default class Login extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-        <View style={{flex: 2}}>
+        <View >
           <Image source={img} style={styles.logo} />
         </View>
-        <View>
+        <View style={{paddingTop:20}}>
           <TextInput style={styles.textCPF} 
             placeholder="CPF" 
             onChangeText={texto => this.state.cpf = texto }
-            backgroundColor="#3598DC" 
             textAlign="center"/>
 
           <TextInput style={styles.textSenha} 
             placeholder="Senha" 
             onChangeText={texto => this.state.senha = texto }
-            backgroundColor="#3598DC" 
-            textAlign="center" 
+            textAlign="center"
             secureTextEntry={true}/>
 
-          <View backgroundColor="#000000" style={styles.viewBtnAcesse}>
+          <View style={styles.viewBtnAcesse}>
             <Button onPress={() => this.logar()} title="ACESSE" color="#FFFFFF"/>
             <View>
-              
               <Text style={styles.avisoErro}>{this.state.msg}</Text>
             </View>
           </View>
@@ -107,17 +104,18 @@ const styles = StyleSheet.create({
   },
   logo: {
     width:'90%',
-    height: 100,
-    marginTop: 100,
+    height: 170,
+    marginTop: 120,
     marginLeft: '5%',
   },
   textCPF: {
     borderWidth: 1,
     borderRadius: 5,
     marginLeft: 25,
-    width: 325,
+    width: '87%',
     height: 35,
     marginBottom: 20,
+      backgroundColor:"#3598DC"
   },
   textSenha: {
     borderWidth: 1,
@@ -126,6 +124,7 @@ const styles = StyleSheet.create({
     width: '87%',
     height: 35,
     marginBottom: 20,
+      backgroundColor:"#3598DC"
   },
   viewBtnAcesse: {
     marginLeft: '6%',

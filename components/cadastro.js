@@ -45,7 +45,7 @@ export default class Cadastro extends Component {
         } else {
           //console.log(body.usuario[0])
           //console.log('Beleza!')
-          _storeData = async () => {
+          let _storeData = async () => {
             try {
               await AsyncStorage.setItem('usuario', body.usuario[0]);
             } catch (error) {
@@ -69,23 +69,23 @@ export default class Cadastro extends Component {
         <TextInput style={styles.textNome}
           onChangeText={texto => this.state.nome = texto }
           placeholder="Nome"
-          backgroundColor="#3598DC"
+
         />
 
         <TextInput style={styles.textCPF}
           onChangeText={texto => this.state.cpf = texto }
           placeholder="CPF"
-          backgroundColor="#3598DC"
+
         />
 
         <TextInput style={styles.textSenha}
           secureTextEntry={true}
           onChangeText={texto => this.state.senha = texto }
           placeholder="Senha"
-          backgroundColor="#3598DC"
+
         />
 
-        <View backgroundColor="#000000" style={styles.btnSalvar}>
+        <View  style={styles.btnSalvar}>
           <Button onPress={() => this.salvar()} title="SALVAR" color="#FFFFFF"/>
         </View>
 
@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
     width: '87%',
     height: 35,
     marginBottom: 20,
+    backgroundColor:"#3598DC"
   },
   textCPF: {
     marginLeft: '6%',
@@ -118,6 +119,7 @@ const styles = StyleSheet.create({
     width: '87%',
     height: 35,
     marginBottom: 20,
+    backgroundColor:"#3598DC"
   },
   textSenha: {
     marginLeft: '6%',
@@ -126,10 +128,12 @@ const styles = StyleSheet.create({
     width: '87%',
     height: 35,
     marginBottom: 20,
+    backgroundColor:"#3598DC"
   },
   btnSalvar: {
     width: '87%',
     marginLeft: '6%',
+    backgroundColor:"#000000"
   },
   avisoErro: {
     marginTop: 20,
