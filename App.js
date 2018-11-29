@@ -1,16 +1,17 @@
 import React, {Component} from 'react';
 import {Router, Scene, Actions, Stack,Drawer} from 'react-native-router-flux';
-import {Platform, StyleSheet} from 'react-native';
+import {Platform, StyleSheet,View,Text} from 'react-native';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
+import HeaderLogoInfoComponent from './src/components/headerLogoinfoComponent';
 
 import reducers from './reducers';
 
 
-import Login from './components/login';
-import Cadastro from './components/cadastro';
-import Principal from './components/principal';
-import MenuDrawerComponent from './components/menuDrawerComponent';
+import Login from './src/screens/login';
+import Cadastro from './src/screens/cadastro';
+import Principal from './src/screens/principal';
+import MenuDrawerComponent from './src/screens/menuDrawerComponent';
 
 type Props = {};
 export default class App extends Component<Props> {
@@ -34,7 +35,7 @@ export default class App extends Component<Props> {
                         // drawerIcon={drawerComp}
                         drawerWidth={300}
                     >
-                        <Scene key='principal' component={Principal} title='Principal'/>
+                        <Scene key='principal' component={Principal} headerTintColor='white' renderTitle={() => { return <HeaderLogoInfoComponent name="wallace" id={36}/>; }} />
                     </Drawer>
 
 
@@ -46,7 +47,7 @@ export default class App extends Component<Props> {
 
 const styles = StyleSheet.create({
     navBar: {
-        backgroundColor: '#252F39',
+        backgroundColor: '#394868',
         color: '#ffffff',
     },
     navTitle: {
