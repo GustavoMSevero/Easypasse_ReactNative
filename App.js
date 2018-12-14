@@ -33,7 +33,7 @@ export default class App extends Component<Props> {
                         }}*/
                         contentComponent={MenuDrawerComponent}
                         // drawerIcon={drawerComp}
-                        drawerWidth={300}
+                        drawerWidth={130}
                     >
                         <Scene key='principal' component={Principal} headerTintColor='white' renderTitle={() => { return <HeaderLogoInfoComponent name="wallace" id={36}/>; }} />
                     </Drawer>

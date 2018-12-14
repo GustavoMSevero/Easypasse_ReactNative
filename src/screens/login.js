@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, TouchableOpacity,StyleSheet, Text, View, Image, TextInput, Button, AsyncStorage} from 'react-native';
+import {Platform, ScrollView,TouchableOpacity,StyleSheet, Text, View, Image, TextInput, Button, AsyncStorage} from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import HeaderLogoInfoComponent from '../components/headerLogoinfoComponent';
 
@@ -71,7 +71,7 @@ export default class Login extends Component<Props> {
 
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <View >
           <Image source={img} style={styles.logo} />
         </View>
@@ -104,7 +104,7 @@ export default class Login extends Component<Props> {
             </TouchableOpacity>
 
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
