@@ -116,8 +116,8 @@ const styles = StyleSheet.create({
 
   },
   logo: {
-    width:'90%',
-    height: 170,
+    width:'100%',
+    height: '49%',
     marginTop: 120,
   },
   textCPF: {

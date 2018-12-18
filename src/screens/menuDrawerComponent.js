@@ -66,8 +66,8 @@ const styles = StyleSheet.create({
         marginTop:10
     },
     imageIcone: {
-        width:50,
-        height:50,
+        width:40,
+        height:40,
 
     },
     textIcone:{
